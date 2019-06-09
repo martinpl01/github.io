@@ -7,23 +7,23 @@
   
   <title>如何搭建个人博客 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   ：注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面">
+  <meta name="description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面的">
 <meta name="keywords" content="学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何搭建个人博客">
 <meta property="og:url" content="http://yoursite.com/2019/06/09/如何搭建个人博客/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   ：注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面">
+<meta property="og:description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面的">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g3u7cyz3ioj30oc0b0dgx.jpg">
 <meta property="og:image" content="https://www.liaoxuefeng.com/files/attachments/919018718363424/0">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g3u79mbazoj30y20nata8.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006tNc79ly1g3u708vlu1j31ri08240a.jpg">
 <meta property="og:image" content="http://ww3.sinaimg.cn/large/006tNc79ly1g3u7geikcyj313m07ijsc.jpg">
-<meta property="og:updated_time" content="2019-06-09T15:20:37.000Z">
+<meta property="og:updated_time" content="2019-06-09T15:36:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何搭建个人博客">
-<meta name="twitter:description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   ：注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面">
+<meta name="twitter:description" content="简介  我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。 步骤   注册github，创建repository 安装git 安装hexo 部署hexo到github上 绑定域名  细节  注册github, 创建repository 登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面的">
 <meta name="twitter:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g3u7cyz3ioj30oc0b0dgx.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -99,7 +99,7 @@
 <h1>步骤</h1>
 
 <ol>
-<li>：注册github，创建repository</li>
+<li>注册github，创建repository</li>
 <li>安装git</li>
 <li>安装hexo</li>
 <li>部署hexo到github上</li>
@@ -150,6 +150,8 @@
 <p>使用npm命令安装Hexo，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 
+<p>Tips 在这里我遇到了个困难，弄了我一个小时，就是安装成功但是 输入 hexo -v来检查hexo 是否安装成功后显示 没有hexo指令，发现是环境配置不对，通过</p>
+<p><em>export PATH</em>=”$PATH: …./bin</p>
 <p>然后初始化我们的博客，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
 
@@ -182,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="cjwp3h7kp0001chsegqt4zg0u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="cjwp42q5g0001dysehae7re0w" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
