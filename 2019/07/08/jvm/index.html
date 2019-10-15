@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/006tNc79gy1g4uu5pxmexj31l40tu0tc.jpg">
 <meta property="og:image" content="http://ww3.sinaimg.cn/large/006tNc79gy1g4uv6u0864j31ce0u00sx.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/006tNc79gy1g4w7t1iwrcj31580ju3yy.jpg">
-<meta property="og:updated_time" content="2019-09-08T07:32:21.000Z">
+<meta property="og:updated_time" content="2019-10-15T08:04:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm">
 <meta name="twitter:description" content="对象在eden中产生，垃圾收集的过程中会让存活下的对象放在survivor区域，长期存活放在老年代区里 Sun Classic VM  世界上第一个商用java虚拟机  只能使用纯解释器的方式执行java代码   Exact VM HotSpot VM  hotSpot的历史  优势  称霸 开源   java内存区域  堆内存 = Java堆 栈内存=虚拟机栈的局部变量表 程序计数器  程序计数">
@@ -301,7 +301,7 @@
 <p>加载：把java字节码 （class文件） 二进制文件读入java虚拟机中，内存当中</p>
 <p>连接： 验证： class文件的语法错误</p>
 <p>​            准备：为类的静态变量分配内存，设置默认值，但是在初始化前，类的静态变量没被真正初始化，</p>
-<p>​            解析：；我想哦买噶的常量池中寻找类，接口，字段和方法的符号引用，把这些符号引用替换成直接引用            的过程</p>
+<p>​            解析：常量池中寻找类，接口，字段和方法的符号引用，把这些符号引用替换成直接引用的过程</p>
 <p>初始化：类的静态变量的初始化</p>
 <p>类实例化：</p>
 <p>为新的对象分配内存</p>
@@ -332,11 +332,28 @@
 <p><strong>类的卸载</strong></p>
 <p>当MySample类被加载，连接和初始化后，他的生命周期就开始了，当代表mysammple类的class对象不再被引用，及不可触及时，class对象就会结束生命周期， mysample类在方法区内的数据也会被被卸载，从而结束mysample类的生命周期</p>
 <p>一个类合适结束生命周期，取决于代表它的class对象何时结束生命周期</p>
+<p><strong><em>命名空间</em></strong></p>
+<p>1子加载器加载的类可以访问父加载器加载的类，而父加载器加载的类访问不了子加载器加载的类</p>
+<p>命名空间是由 当前加载器和其父加载器构成的，其中的类不能重复</p>
+<p>内建于jvm虚拟机内部的启动类加载器会加载java.lang.classLoader等加载器，在jvm启动时，jvm内的一部分特殊代码块会启动，他会加载扩展类加载器和系统类加载器， 他就是启动类加载器 bootstrap</p>
+<p>启动类加载器不是java类，他是jvm的（系统像特定）机器指令，启动类加载器负责开启整个加载过程。</p>
+<p>启动类加载器还负责jre工作的模块 比如java.util java.lang.string</p>
+<p><strong><em>上下文加载器</em></strong></p>
+<p>当前类加载器 Current ClassLoader</p>
+<p>每个类都会使用自己的类加载器 加载自身的加载器去加载其他类，</p>
+<p>如果CLASS X 引用了class y 那么 class x用加载自己的类加载器去加载class y 如果y没有被加载</p>
+<p>线程上下文加载器 从JDK 1.2 开始， 类Thread.currentThread().getContextClassLoader()</p>
+<p>如果没有通过set 和 get 方法进行设置， 线程将继承父线程的上下文加载器</p>
+<p>java运行的初始线程的上下文加载器都是系统类加载器， 在线程运行的代码可以通过该类加载器加载类与资源</p>
+<p>SPI(Service Provider Interface)</p>
+<p>父classLoader可以使用当前线程Thread.currentThread().getContextClassLoader()所指定的classLoader加载的类。这就改变了父classLoader不能使用子classLoader或者其他没有父子关系的classLoader加载类的情况，即改变了双亲委派模型</p>
+<p>线程上下文加载器就是当前线程的Current ClassLoader</p>
+<p>在双亲委托模型下，类加载从下至上的，下层的类加载器会委托上层的类加载器去加载，但在spi来说，有些接口时java核心库所提供的，而java核心库是用启动类加载器所提供的，而这些接口的实现去来自不同的jar包 厂商提共的， java的启动类加载器不会加载其他来源的jar包， 这些传统的双清委托模型无法满足spi要求，而这些可以同给当前线程设置上下文类加载器就可以由上下文类加载器来实现对于接口实现类的加载。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/08/jvm/" data-id="ck0ars8a400049btdrcgecju6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/jvm/" data-id="ck1rkbzuq0000fftdttauizm1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
