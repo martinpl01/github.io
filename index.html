@@ -62,6 +62,94 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-jvm加载" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/15/jvm加载/" class="article-date">
+  <time datetime="2019-10-15T11:41:18.000Z" itemprop="datePublished">2019-10-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/15/jvm加载/">jvm加载</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>part 1</strong>介绍JVM的三个功能: 加载 连接 初始化</p>
+<p><strong>虚拟机与程序的生命周期</strong></p>
+<p>1.System.exit()</p>
+<p>2.程序正常结束</p>
+<p>3.程序抛出异常</p>
+<p>4.操作系统让虚拟机结束</p>
+<p><strong>1.加载</strong></p>
+<p>查找并加载二进制流进内存，也就是进虚拟机</p>
+<p>二进制文件包括</p>
+<ol>
+<li><p>从ZIP包中读取，最终成为JAR, EAR, WAR等格式</p>
+</li>
+<li><p>从网络中获取，Applet</p>
+</li>
+<li><p>运行时计算生成 动态代理技术</p>
+</li>
+<li><p>从其他文件中获取， jsp</p>
+</li>
+<li><p>从数据库中获取</p>
+</li>
+</ol>
+<p><strong>细节</strong></p>
+<p>1.通过一个类的全限定名Binary name来获取定义的二进制字节流</p>
+<p>2.这个字节流所代表的静态存储结构转化为方法区的运行时数据结构</p>
+<p>3.在java堆中生成一个代表这个类的java.lang.Class对象,作为对方法区这些数据的访问入口</p>
+<p>tip：这个阶段是可控性最强的阶段，可以使用自定义的类加载器来加载类。</p>
+<p><strong>2.连接</strong></p>
+<p>*.验证：验证二进制流的语法，确保二进制流的正确性，因为编译后的class文件，可能被恶意串改。</p>
+<p>*.准备：为类的静态变量创建内存空间，并赋予初始值</p>
+<p>*.解析:   把类的符号引用转为直接引用</p>
+<p><strong>准备</strong></p>
+<p>准备阶段是正式为类变量赋予内存空间和初始值，这些内存都在方法区中分配</p>
+<ol>
+<li>仅对类变量赋初始值即static修饰的变量，不包含实例变量，实例变量会在对象实例化一起被分配到java堆中</li>
+</ol>
+<p>public static int a = 2; 在准备阶段 a 被赋值为0而不是2；把a赋值为2的动作将在初始化阶段才会执行</p>
+<ol start="2">
+<li>如果类字段的字段属性表中存在 ConstantValue 属性，即同时被 final 和 static 修饰，那么在准备阶段变量 value 就会被初始化为 ConstValue 属性所指定的值</li>
+</ol>
+<p><strong>初始化</strong></p>
+<p>只有对类的首次主动使用才会触发类的初始化，7种主动使用的例子</p>
+<ol>
+<li>创建类的实例</li>
+<li>主动调用类的静态方法</li>
+<li>初始化类的子类，此类也算出次使用</li>
+<li>访问类的静态变量 给静态变量赋值</li>
+<li>发射Class.forName(“com.test.Test”)</li>
+<li>被虚拟机启动时被标记为启动类</li>
+<li>动态代理</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/15/jvm加载/" data-id="ck1t1yfv200029vtd4i4ddccr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-jvm" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/07/08/jvm/" class="article-date">
@@ -342,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/08/jvm/" data-id="ck1t1xm1r00009itdom8sba8y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/jvm/" data-id="ck1t1yfux00019vtdqi543sbx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -513,7 +601,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck1t1xm2f00039itd2enrhoiq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck1t1yfva00049vtd3r3912fu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -643,7 +731,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck1t1xm2p00049itdedqd3zzj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck1t1yfvd00059vtdeilvse9e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -694,7 +782,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck1t1xm2100019itdzrqab0xg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck1t1yfur00009vtdl1870avx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -736,7 +824,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
     </div>
   </div>
 
@@ -747,6 +835,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/10/15/jvm加载/">jvm加载</a>
+          </li>
         
           <li>
             <a href="/2019/07/08/jvm/">jvm</a>
