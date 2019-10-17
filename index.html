@@ -62,9 +62,118 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-jvm加载" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-JVM加载" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/15/jvm加载/" class="article-date">
+    <a href="/2019/10/16/JVM加载/" class="article-date">
+  <time datetime="2019-10-16T09:11:40.000Z" itemprop="datePublished">2019-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/16/JVM加载/">JVM加载</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##加载</p>
+<p>###简介</p>
+<p>通过类全限定名binary name 来定义二进制字节流，把这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。在内存中生成java.lang.Class对象是方法区这个类的各种数据的访问入口。</p>
+<h3 id="主体"><a href="#主体" class="headerlink" title="主体"></a>主体</h3><p>####类加载器</p>
+<p>双亲委托模型下的加载器：bootstrap 启动类加载器，ext 扩展类加载器，系统/应用类加载器，自定义类加载器</p>
+<p><strong>启动类加载器</strong></p>
+<p>启动类加载器是负责加载rt.jar和其他类加载器的加载器 即一些重要class对象，而启动类加载器是虚拟机自带的一段c++代码，所以它不是java类，他在虚拟机启动时就有了不需要加载器去加载。所以一个类getClassLoader()返回null 则这个类是由启动类加载器去加载的。负责加载存放在 <code>JDK\jre\lib</code>(JDK代表JDK的安装目录，下同)下，或被 <code>-Xbootclasspath</code>参数指定的路径中的，并且能被虚拟机识别的类库（如rt.jar，所有的java.开头的类均被 <code>BootstrapClassLoader</code>加载）。启动类加载器是无法被Java程序直接引用的。</p>
+<p><strong>扩展类加载器</strong></p>
+<p><code>ExtensionClassLoader</code>，该加载器由 <code>sun.misc.Launcher$ExtClassLoader</code>实现，它负责加载 <code>JDK\jre\lib\ext</code>目录中，或者由 <code>java.ext.dirs</code>系统变量指定的路径中的所有类库（如javax.开头的类），开发者可以直接使用扩展类加载器。</p>
+<p><strong>应用类加载器</strong></p>
+<p><code>ApplicationClassLoader</code>，该类加载器由 <code>sun.misc.Launcher$AppClassLoader</code>来实现，它负责加载用户类路径（ClassPath）所指定的类，开发者可以直接使用该类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p>
+<p><strong>自定义类加载器</strong></p>
+<p>应用程序都是由这三种类加载器互相配合进行加载的，如果有必要，我们还可以加入自定义的类加载器。因为JVM自带的ClassLoader只是懂得从本地文件系统加载标准的java class文件，因此如果编写了自己的ClassLoader，便可以做到如下几点：</p>
+<ul>
+<li>1、在执行非置信代码之前，自动验证数字签名。</li>
+<li>2、动态地创建符合用户特定需要的定制化构建类。</li>
+<li>3、从特定的场所取得java class，例如数据库中和网络中。</li>
+</ul>
+<p><strong>JVM类加载机制</strong></p>
+<ul>
+<li><p>全部负责：当一个类加载器负责加载某个class类时，该class类所有依赖和引用其他class类也将由该类加载器负责载入，除非显示使用另一个类加载器（SPI）但是注意命名空间的问题</p>
+</li>
+<li><p>父类委托：当一个类加载负责加载某个class类时，先去判断有没有加载过这个类，没有的话委托父类去加载这个类，以此类推到启动类加载器，然后由自身去加载，这样更安全让重要的类首先会被启动，扩展，系统等加载器加载而不是自定义加载器。</p>
+</li>
+</ul>
+<p><strong>类的加载方式</strong></p>
+<ul>
+<li><p>命令行启动应用时进行加载</p>
+</li>
+<li><p>通过<code>Class.forName()</code>方法动态加载</p>
+</li>
+<li><p>通过<code>ClassLoader.loadClass()</code>方法动态加载</p>
+</li>
+</ul>
+<p><strong>Class.forName()和ClassLoader.loadClass()区别</strong></p>
+<ul>
+<li><code>Class.forName()</code>：将类的.class文件加载到jvm中之外，还会对类进行解释，执行类中的static块；</li>
+<li><code>ClassLoader.loadClass()</code>：只干一件事情，就是将.class文件加载到jvm中，不会执行static中的内容,只有在newInstance才会去执行static块。</li>
+<li><code>Class.forName(name,initialize,loader)</code>带参函数也可控制是否加载static块。并且只有调用了<code>newInstance()</code>方法采用调用构造函数，创建类的对象 。</li>
+</ul>
+<p>ClassLoader源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</span><br><span class="line">    <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">        <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">        Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> t0 = System.nanoTime();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    c = parent.loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    c = findBootstrapClassOrNull(name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// If still not found, then invoke findClass in order</span></span><br><span class="line">                <span class="comment">// to find the class.</span></span><br><span class="line">                <span class="keyword">long</span> t1 = System.nanoTime();</span><br><span class="line">                c = findClass(name);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// this is the defining class loader; record the stats</span></span><br><span class="line">                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);</span><br><span class="line">                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);</span><br><span class="line">                sun.misc.PerfCounter.getFindClasses().increment();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">            resolveClass(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>双亲委派模型的意义</p>
+<ul>
+<li>系统类防止内存中出现多份同样的字节码</li>
+<li>保证Java程序安全稳定运行</li>
+</ul>
+<p><strong>命名空间</strong></p>
+<ul>
+<li><p>子加载器加载的类可以访问父加载器加载的类，而父加载器加载的类访问不了子加载器加载的类</p>
+</li>
+<li><p>命名空间是由 当前加载器和其父加载器构成的，其中的类不能重复</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">    MyClassLoader loader1 = <span class="keyword">new</span> MyClassLoader(<span class="string">"loader1"</span>);</span><br><span class="line">    MyClassLoader loader2 = <span class="keyword">new</span> MyClassLoader(<span class="string">"loader2"</span>);</span><br><span class="line">    loader1.setPath(<span class="string">"/Users/yujia/Desktop/"</span>);</span><br><span class="line">    loader2.setPath(<span class="string">"/Users/yujia/Desktop/"</span>);</span><br><span class="line">    Class&lt;?&gt; clazz1 = loader1.loadClass(<span class="string">"com.zyj.module.Person"</span>);</span><br><span class="line">    Class&lt;?&gt; clazz2 = loader2.loadClass(<span class="string">"com.zyj.module.Person"</span>);</span><br><span class="line">    System.out.println(clazz1 == clazz2);</span><br><span class="line">    Object object1 = clazz1.newInstance();</span><br><span class="line">    Object object2 = clazz2.newInstance();</span><br><span class="line">    Method method = clazz1.getMethod(<span class="string">"setPerson"</span>, Object.class);</span><br><span class="line">    method.invoke(object1, object2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让loader1和loader2去自己去加载Person而不是父类启动类加载器（class路径删除Person.class 仅放在桌面也就是这个MyClassLoader的可以知道的范围下） 通过<code>method.invoke(object1, object2)</code>报错，内容为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.reflect.InvocationTargetException</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</span><br><span class="line">	at com.zyj.<span class="keyword">module</span>.Test10.main(Test10.java:<span class="number">39</span>)</span><br><span class="line">Caused by: java.lang.ClassCastException: com.zyj.<span class="keyword">module</span>.Person cannot be cast to com.zyj.<span class="keyword">module</span>.Person</span><br><span class="line">	at com.zyj.<span class="keyword">module</span>.Person.setPerson(Person.java:<span class="number">14</span>)</span><br><span class="line">	... <span class="number">5</span> more</span><br></pre></td></tr></table></figure>
+
+<p><code>Caused by: java.lang.ClassCastException: com.zyj.module.Person cannot be cast to com.zyj.module.Person</code> 这就是不同的类加载器命名空间中的类相互不认识的例子</p>
+<p><strong>双亲委托模型的父子关系</strong></p>
+<p>是引用关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyClassLoader loader1 = <span class="keyword">new</span> MyClassLoader(<span class="string">"loader1"</span>);</span><br><span class="line">MyClassLoader loader2 = <span class="keyword">new</span> MyClassLoader(loader1, <span class="string">"loader2"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>loader1和loader2同一个自定义类，但是loader2的构造器让loader1成为loader2的父加载器。</p>
+<p><strong>上下文类加载器</strong></p>
+<p>由于类加载器的特点：全部负责即负责该类的加载的类加载器也会负责类的引用的class的加载。而SPI这种情况 接口类属于由启动类加载而implement是由依赖加进去也就是系统类加载器加载，而父加载器不认识子加载器的类（命名空间）会报错，而上下文加载器就是而父加载器不认识子加载器或者没有父子关系的加载器的类相互不认识的问题。</p>
+<p>当前类加载器 Current ClassLoader，线程上下文加载器就是当前线程的Current ClassLoader</p>
+<p>如果没有通过<code>Thread.currentThread().getContextClassLoader()</code> 方法进行设置， 线程将继承父线程的上下文加载器，而启动类的上下文contextClassLoader是系统类加载器（满足SPI实现去来自不同的jar包 厂商提共的）</p>
+<p><strong>上下文类加载器的总结</strong>：在双亲委托模型下，类加载从下至上的，下层的类加载器会委托上层的类加载器去加载，但在spi来说，有些接口时java核心库所提供的，而java核心库是用启动类加载器所提供的，而这些接口的实现去来自不同的jar包 厂商提共的， java的启动类加载器不会加载其他来源的jar包， 这些传统的双清委托模型无法满足spi要求，而这些可以同给当前线程设置上下文类加载器就可以由上下文类加载器来实现对于接口实现类的加载。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/16/JVM加载/" data-id="ck1u5213b000062tds29y6na3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JVM 加载连接初始化简介" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/15/JVM 加载连接初始化简介/" class="article-date">
   <time datetime="2019-10-15T11:41:18.000Z" itemprop="datePublished">2019-10-15</time>
 </a>
     
@@ -76,7 +185,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/15/jvm加载/">jvm加载</a>
+      <a class="article-title" href="/2019/10/15/JVM 加载连接初始化简介/">jvm加载</a>
     </h1>
   
 
@@ -138,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/15/jvm加载/" data-id="ck1t1yfv200029vtd4i4ddccr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/15/JVM 加载连接初始化简介/" data-id="ck1u5213h000162tdupg124hp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -150,9 +259,9 @@
 
 
   
-    <article id="post-jvm" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-jvm笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/08/jvm/" class="article-date">
+    <a href="/2019/07/08/jvm笔记/" class="article-date">
   <time datetime="2019-07-08T02:09:39.000Z" itemprop="datePublished">2019-07-08</time>
 </a>
     
@@ -164,7 +273,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/08/jvm/">jvm</a>
+      <a class="article-title" href="/2019/07/08/jvm笔记/">jvm</a>
     </h1>
   
 
@@ -430,7 +539,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/08/jvm/" data-id="ck1t1yfux00019vtdqi543sbx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/jvm笔记/" data-id="ck1u5213q000362tdc9d6n9bb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -601,7 +710,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck1t1yfva00049vtd3r3912fu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck1u52140000562td5zlup0n7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -731,7 +840,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck1t1yfvd00059vtdeilvse9e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck1u52143000862tda9zjsu5x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -782,7 +891,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck1t1yfur00009vtdl1870avx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck1u5213u000462tdam03dr4b" class="article-share-link">Share</a>
       
       
     </footer>
@@ -837,11 +946,15 @@
       <ul>
         
           <li>
-            <a href="/2019/10/15/jvm加载/">jvm加载</a>
+            <a href="/2019/10/16/JVM加载/">JVM加载</a>
           </li>
         
           <li>
-            <a href="/2019/07/08/jvm/">jvm</a>
+            <a href="/2019/10/15/JVM 加载连接初始化简介/">jvm加载</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/jvm笔记/">jvm</a>
           </li>
         
           <li>
@@ -850,10 +963,6 @@
         
           <li>
             <a href="/2019/06/09/如何搭建个人博客/">如何搭建个人博客</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/09/hello-world/">Hello World</a>
           </li>
         
       </ul>
