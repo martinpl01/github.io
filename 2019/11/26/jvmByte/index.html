@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>jvmByte | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用javap -verbose命令分析一个字节码文件（class文件），讲会分析该字节码的魔数，版本号，常量池，类信息，类的构造方法，类中的方法信息，类变量与成员变量等信息。 魔数：所有的class文件的魔数都是0XCAFEBABE 魔数之后的4个字节为版本信息，前两个字节表示minor version 次版本号 后两个字节表示 major version 主版本号，这里的版本是 00 00">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvmByte">
+<meta property="og:url" content="http://yoursite.com/2019/11/26/jvmByte/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="使用javap -verbose命令分析一个字节码文件（class文件），讲会分析该字节码的魔数，版本号，常量池，类信息，类的构造方法，类中的方法信息，类变量与成员变量等信息。 魔数：所有的class文件的魔数都是0XCAFEBABE 魔数之后的4个字节为版本信息，前两个字节表示minor version 次版本号 后两个字节表示 major version 主版本号，这里的版本是 00 00">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-26T04:05:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jvmByte">
+<meta name="twitter:description" content="使用javap -verbose命令分析一个字节码文件（class文件），讲会分析该字节码的魔数，版本号，常量池，类信息，类的构造方法，类中的方法信息，类变量与成员变量等信息。 魔数：所有的class文件的魔数都是0XCAFEBABE 魔数之后的4个字节为版本信息，前两个字节表示minor version 次版本号 后两个字节表示 major version 主版本号，这里的版本是 00 00">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jvmByte" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/26/jvmByte/" class="article-date">
+  <time datetime="2019-11-26T04:02:15.000Z" itemprop="datePublished">2019-11-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      jvmByte
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>使用javap -verbose命令分析一个字节码文件（class文件），讲会分析该字节码的魔数，版本号，常量池，类信息，类的构造方法，类中的方法信息，类变量与成员变量等信息。</li>
+<li>魔数：所有的class文件的魔数都是0XCAFEBABE</li>
+<li>魔数之后的4个字节为版本信息，前两个字节表示minor version 次版本号 后两个字节表示 major version 主版本号，这里的版本是 00 00 00 00 32，这里的00 00 代表0，这里的 00 32 转化为10进制就是 3x16 + 2 = 50,所以是1.6.0。 </li>
+<li>常量池的总体结构：紧跟着主版本号的是常量池的入口，一个java类定义的很多东西都是通过常量池来维护和描述的。可以将常量池看做是class文件的资源仓库，比如java定义的方法和变量信息，都是存储在常量池中的，常量池主要存储两类常量：字面量和符号引用。字面量如文本字符串，java中申明为final的常量值等，而符号引用如类和接口的全限定名，字段的名称与描述符, 方法的名称与描述符等</li>
+<li>常量池的结构。java类所对应的常量池主要由常量池数量和常量池数组共同组成，常量池数量紧跟主版本号。占2个字符；常量池数组尽更常量池数量，常量池数组和普通数组不一样的地方在于常量池中的元素类型，和结构都是各个不同的。但是名一种元素的第一个数据都是u1类型，该字节是个标志位，占一个字节，JVM在解析常量池会根据u1类型来获取元素的具体类型。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ClassFile &#123;</span><br><span class="line">    u4 magic;</span><br><span class="line">    u2 minor_version</span><br><span class="line">    u2 major_version</span><br><span class="line">    u2 constant-pool-count;</span><br><span class="line">    cp_info constant_pool[constant_pool_count-<span class="number">1</span>];</span><br><span class="line">    u2 access_flags;</span><br><span class="line">    u2 this_class;</span><br><span class="line">    u2 super_class;</span><br><span class="line">    u2 interface_count;</span><br><span class="line">    u2 interfaces[inferface_count]</span><br><span class="line">    u2 fields_count;</span><br><span class="line">    field_info fields[fields_count]</span><br><span class="line">    u2 methods_count;</span><br><span class="line">    method_info methods[methods_count]</span><br><span class="line">    u2 attributes_count;</span><br><span class="line">    attribute_info attributes[attributes_count]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>access_flag</strong></p>
+<p>accessflag代表2个字节是用来识别这个类或者接口的访问信息，包括修饰符。</p>
+<p>ACC_PUBLIC 0X0001 是否是public类型</p>
+<p>ACC_FINAL 0X0010 是否是final，只有类可以设置</p>
+<p>…….</p>
+<p>ACC_PUBLIC , ACC_SUPER 0X0001|0X0020 = 0X0021 也就是public class的 access_flag</p>
+<p><strong>类索引，父索引与接口索引集合</strong></p>
+<p>  this class 和super class 索引可以同过常量池中获取具体值。由于java的语法是单继承多实现。通过inferface count能得出具体实现了多少interface， 后面的是具体需要实现的inferface。</p>
+<p><strong>字段表集合</strong></p>
+<p>field count来表示这个class有多少field，而field结构由：access_flag name index, descriptor index 来表示。</p>
+<p>index内容需要通过去常量池里去找。</p>
+<p><strong>Synchronize</strong></p>
+<p>syn字段在非静态方法时给这个this对象上锁， 在单线程时，进入方法 这个对象的锁value-1 即变成0， 离开这个方法时对象锁+1，在为0的时候不让其他人调用这个方法，而static时，在class对象上锁</p>
+<p>syn字段在方法里面时， 则是锁语句 moniter ente 入，r moniter exist出， 但是切记 一个入口，多个出口，以防exception时出不去。</p>
+<p><strong>Monitor enter</strong></p>
+<p>The <em>objectref</em> must be of type <code>reference</code>.</p>
+<p>The thread that executes <em>monitorexit</em> must be the owner of the monitor associated with the instance referenced by <em>objectref</em>.</p>
+<p>The thread decrements the entry count of the monitor associated with <em>objectref</em>. If as a result the value of the entry count is zero, the thread exits the monitor and is no longer its owner. Other threads that are blocking to enter the monitor are allowed to attempt to do so.</p>
+<p><strong>Monitor exit</strong></p>
+<p>The <em>objectref</em> must be of type <code>reference</code>.</p>
+<p>The thread that executes <em>monitorexit</em> must be the owner of the monitor associated with the instance referenced by <em>objectref</em>.</p>
+<p>The thread decrements the entry count of the monitor associated with <em>objectref</em>. If as a result the value of the entry count is zero, the thread exits the monitor and is no longer its owner. Other threads that are blocking to enter the monitor are allowed to attempt to do so.</p>
+<p><strong>this</strong></p>
+<p>对于java的类的每一个实例方法（非static方法） 骑在编译后所生成的字节码当中，方法参数的数量总是回避源代码中方法参数的数量多一个（this），它位于方法的第一个参数位置处，这样我们就可以再java的实例中访问到当先对象的属性和其他的方法通过this</p>
+<p>这个操作是在编译期间完成的即由javac编译的时候将对this的访问转化为对一个普通实例方法参数的访问；接下来的在运行期间有JVM在调用实例方法时，自动向实例方法传入该this参数，所以在实例方法的局部变量表中，至少会有一个指向当前对象的局部变量。</p>
+<p><strong>符号引用</strong></p>
+<p>符号引用：binary name 类的全限定名</p>
+<p>通过这个能类加载或第一次使用：  静态解析</p>
+<p>或者每次运行的时候都会转化为直接引用 ：动态链接 </p>
+<p><strong>直接引用</strong></p>
+<p>是比如方法的地址信息</p>
+<p>静态解析的4种情形</p>
+<ol>
+<li>静态方法</li>
+<li>构造方法</li>
+<li>父类方法</li>
+<li>私有方法</li>
+</ol>
+<p>为什么public方法不行是因为重写 重载会有多态的问题，以上4个方法称为非虚方法，他们在类加载阶段就可以将符号引用转化为直接引用，</p>
+<p>静态解析就是在字节码还没有被运行时能把信息解析出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.<span class="keyword">module</span>.bytecode;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 重载</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> yujia</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span> 2019-11-18 11:40</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span> <span class="params">(GrandPa grandPa)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"grandpa"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span> <span class="params">(Father father)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"father"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span> <span class="params">(Son son)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"son"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyTest3 myTest3 = <span class="keyword">new</span> MyTest3();</span><br><span class="line">        GrandPa g1 = <span class="keyword">new</span> Father();</span><br><span class="line">        GrandPa g2 = <span class="keyword">new</span> Son();</span><br><span class="line">        myTest3.test(g1);</span><br><span class="line">        myTest3.test(g2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GrandPa</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span> <span class="keyword">extends</span> <span class="title">GrandPa</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是：</p>
+<figure class="highlight plain"><figcaption><span>"-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grandpa</span><br><span class="line">grandpa</span><br></pre></td></tr></table></figure>
+
+<p>重载：是静态行为，在编译期可以完成确定 看前面就行了</p>
+<p>重写：里面的操作</p>
+<p>invokevirtual: 在编译期会以静态类型，在运行期去找 操作栈顶的元素也是当前引用所指向的对象的方法</p>
+<p>解释执行：通过解释器来读取字节码，遇到相应的字节码指令就去执行</p>
+<p>编译执行：通过及时编译器 just in time jit 将字节码转化为本地机器码去执行，现代JVM根据热点代码去生成</p>
+<p>栈的指令集和寄存器的指令集</p>
+<ol>
+<li>jvm所执行的指令是基于栈的指令集</li>
+<li>基于栈的指令集主要操作是出栈和入栈</li>
+<li>基于栈的指令集的优势在于不同平台的移植性，而基于寄存器的指令集和底层紧密联系无法拥有移植性</li>
+<li>相同的操作 栈的要多很多，在内存做速度慢 寄存器 操作的少 且在高速缓冲期由cpu做 快很多。虚拟机可以优化但还是比寄存器的慢很多</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/26/jvmByte/" data-id="ck3fc80ju0005jnsehxu3oxij" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/16/JVM加载/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JVM加载</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习/">学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/学习/" style="font-size: 20px;">学习</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/11/26/jvmByte/">jvmByte</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/16/JVM加载/">JVM加载</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/15/JVM 加载连接初始化简介/">jvm加载</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/jvm笔记/">jvm</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/13/markdown-语法/">markdown 语法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
