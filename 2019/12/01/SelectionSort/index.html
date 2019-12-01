@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>SelectionSort | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+<meta name="keywords" content="algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SelectionSort">
+<meta property="og:url" content="http://yoursite.com/2019/12/01/SelectionSort/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-12-01T13:53:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SelectionSort">
+<meta name="twitter:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SelectionSort" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/01/SelectionSort/" class="article-date">
+  <time datetime="2019-12-01T12:36:43.000Z" itemprop="datePublished">2019-12-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SelectionSort
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>选择排序</strong></p>
+<ol>
+<li>遍历找出最小（最大）元素放在最前（最后）的位置上。</li>
+<li>继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。</li>
+<li>不管数据如何情况，循环n次</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span> [] array = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; array.length; index++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minValue = array[index];</span><br><span class="line">        <span class="keyword">int</span> minIndex = index;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = index + <span class="number">1</span>; j &lt; array.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(minValue &gt;= array[j]) &#123;</span><br><span class="line">                minValue = array[j];</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//进行交换</span></span><br><span class="line">        <span class="keyword">int</span> tmp = minValue;</span><br><span class="line">        array[minIndex] = array[index];</span><br><span class="line">        array[index] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度</strong></p>
+<p>最坏情况：O(n^2)</p>
+<p>最好情况：O(n^2)</p>
+<p>无论如何都要遍历n x n次</p>
+<p><strong>空间复杂度</strong></p>
+<p>O(1) 和输入n无关</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3n2fr5000033pse6wtrdlnc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/01/BubbleSort/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">BubbleSort</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习/">学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/学习/" style="font-size: 20px;">学习</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/01/SelectionSort/">SelectionSort</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/01/BubbleSort/">BubbleSort</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/26/jvmByte/">jvmByte</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/16/JVM加载/">JVM加载</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/15/JVM 加载连接初始化简介/">jvm加载</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
