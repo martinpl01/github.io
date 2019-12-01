@@ -90,8 +90,10 @@
 <li>继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。</li>
 <li>不管数据如何情况，循环n次</li>
 </ol>
+<p><strong>代码</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span> [] array = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; array.length; index++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minValue = array[index];</span><br><span class="line">        <span class="keyword">int</span> minIndex = index;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = index + <span class="number">1</span>; j &lt; array.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(minValue &gt;= array[j]) &#123;</span><br><span class="line">                minValue = array[j];</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//进行交换</span></span><br><span class="line">        <span class="keyword">int</span> tmp = minValue;</span><br><span class="line">        array[minIndex] = array[index];</span><br><span class="line">        array[index] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>总结</strong></p>
 <p><strong>时间复杂度</strong></p>
 <p>最坏情况：O(n^2)</p>
 <p>最好情况：O(n^2)</p>
@@ -102,7 +104,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3n2fr5000033pse6wtrdlnc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3n2hkq2000346segp6i3qlv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
@@ -159,7 +161,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/01/BubbleSort/" data-id="ck3n2fr4l00003psel2qz9hy6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/01/BubbleSort/" data-id="ck3n2hkpu000146seeh5xy33a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
@@ -263,7 +265,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/26/jvmByte/" data-id="ck3n2fr5900083pse3wqqbold" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/11/26/jvmByte/" data-id="ck3n2hkqg000846seaxqz2w59" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
@@ -372,7 +374,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/16/JVM加载/" data-id="ck3n2fr5300043psemcrz777x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/16/JVM加载/" data-id="ck3n2hkqe000546sey7fqqwza" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -460,7 +462,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/15/JVM 加载连接初始化简介/" data-id="ck3n2fr4s00013psezl752adj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/15/JVM 加载连接初始化简介/" data-id="ck3n2hkpo000046seb9fpo319" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -752,7 +754,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/08/jvm笔记/" data-id="ck3n2fr5d000b3psenbm3yzyy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/jvm笔记/" data-id="ck3n2hkqh000a46se4bh44aye" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -923,7 +925,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck3n2fr5b00093psexd5jbg7j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck3n2hkql000c46seufd7r2nl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -1053,7 +1055,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck3n2fr5m000k3psetnnnzpr1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck3n2hkr2000j46sejp66yeu6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -1104,7 +1106,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck3n2fr5700053pse8ct4s196" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck3n2hkq9000446semapadqw8" class="article-share-link">Share</a>
       
       
     </footer>

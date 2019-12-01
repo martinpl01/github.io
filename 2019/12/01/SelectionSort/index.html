@@ -7,18 +7,18 @@
   
   <title>SelectionSort | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+  <meta name="description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  代码 12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArra">
 <meta name="keywords" content="algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SelectionSort">
 <meta property="og:url" content="http://yoursite.com/2019/12/01/SelectionSort/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+<meta property="og:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  代码 12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArra">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-01T13:53:53.000Z">
+<meta property="og:updated_time" content="2019-12-01T13:55:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SelectionSort">
-<meta name="twitter:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArray,">
+<meta name="twitter:description" content="选择排序  遍历找出最小（最大）元素放在最前（最后）的位置上。 继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。 不管数据如何情况，循环n次  代码 12345678910111213141516171819public int[] sort(int[] sourceArray) &amp;#123;    int [] array = Arrays.copyOf(sourceArra">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -93,8 +93,10 @@
 <li>继续寻找剩余数组中最小（最大）元素放在剩余数组最前（最后）的位置上。</li>
 <li>不管数据如何情况，循环n次</li>
 </ol>
+<p><strong>代码</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span> [] array = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; array.length; index++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minValue = array[index];</span><br><span class="line">        <span class="keyword">int</span> minIndex = index;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = index + <span class="number">1</span>; j &lt; array.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(minValue &gt;= array[j]) &#123;</span><br><span class="line">                minValue = array[j];</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//进行交换</span></span><br><span class="line">        <span class="keyword">int</span> tmp = minValue;</span><br><span class="line">        array[minIndex] = array[index];</span><br><span class="line">        array[index] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>总结</strong></p>
 <p><strong>时间复杂度</strong></p>
 <p>最坏情况：O(n^2)</p>
 <p>最好情况：O(n^2)</p>
@@ -105,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3n2fr5000033pse6wtrdlnc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3n2hkq2000346segp6i3qlv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
