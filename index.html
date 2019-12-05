@@ -62,6 +62,111 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-MergeSort" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/05/MergeSort/" class="article-date">
+  <time datetime="2019-12-05T08:25:44.000Z" itemprop="datePublished">2019-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/05/MergeSort/">MergeSort</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>归并算法</strong></p>
+<ul>
+<li>将数组整个拆分logn次，每次执行拆分操作后，进行排序，排序完成后进行合并起来。</li>
+<li>divide到最小单位（2个元素），然后进行合并。</li>
+</ul>
+<p><strong>代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeSort</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span> [] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span> [] array = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        divide(array, <span class="number">0</span>, array.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">divide</span><span class="params">(<span class="keyword">int</span> [] array, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//当子序列中只有一个元素时结束递归</span></span><br><span class="line">      <span class="keyword">if</span>(left&lt;right)&#123;  </span><br><span class="line">          <span class="comment">//划分子序列</span></span><br><span class="line">            <span class="keyword">int</span> mid=left - (left  - right)/<span class="number">2</span>;</span><br><span class="line">            divide(array, left, mid);</span><br><span class="line">            divide(array, mid+<span class="number">1</span>, right);</span><br><span class="line">            conquer(array, left, mid, right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">conquer</span><span class="params">(<span class="keyword">int</span> [] array, <span class="keyword">int</span> left, <span class="keyword">int</span> mid, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> [] tmpArray = <span class="keyword">new</span> <span class="keyword">int</span>[array.length];</span><br><span class="line">        <span class="keyword">int</span> p1 = left;</span><br><span class="line">        <span class="keyword">int</span> p2 = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> k = left;</span><br><span class="line">        <span class="keyword">while</span>(p1 &lt;= mid &amp;&amp; p2 &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">if</span>(array[p1] &lt;= array[p2]) &#123;</span><br><span class="line">                tmpArray[k++]  = array[p1++];</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                tmpArray[k++]  = array[p2++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p1 &lt;= mid) &#123;</span><br><span class="line">            tmpArray[k++]  = array[p1++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p2 &lt;= right) &#123;</span><br><span class="line">            tmpArray[k++]  = array[p2++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = left; i &lt;= right;i++) &#123;</span><br><span class="line">            array[i] = tmpArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ;i&lt;arr.length;i++)&#123;</span><br><span class="line">            System.out.print(arr[i]+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">49</span>, <span class="number">38</span>, <span class="number">65</span>, <span class="number">97</span>, <span class="number">76</span>, <span class="number">13</span>, <span class="number">27</span>, <span class="number">50</span> &#125;;</span><br><span class="line">        MergeSort mergeSort = <span class="keyword">new</span> MergeSort();</span><br><span class="line">        <span class="keyword">int</span> [] array =  mergeSort.sort(a);</span><br><span class="line">        System.out.println(<span class="string">"排好序的数组："</span>);</span><br><span class="line">        printArray(array);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong></p>
+<p><strong>时间复杂度</strong></p>
+<p>最好情况：O(nlogn)</p>
+<p>最坏情况：O(nlogn)</p>
+<p><strong>空间复杂度</strong></p>
+<p>O(n)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/12/05/MergeSort/" data-id="ck3shq4ct000363se9ecnctub" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-InsertSort" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/04/InsertSort/" class="article-date">
+  <time datetime="2019-12-04T07:34:27.000Z" itemprop="datePublished">2019-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/04/InsertSort/">InsertSort</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>插入排序</strong></p>
+<ul>
+<li>从第二个元素开始，插入有序的数组（只有第一个元素的数组是有序数组）中找到相应的位置</li>
+</ul>
+<p><strong>代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.<span class="keyword">module</span>.algorithm.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> yujia</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span> 2019-12-04 15:46</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InsertSort</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span> [] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] array = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = array[i];</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">while</span>(j &gt; <span class="number">0</span> &amp;&amp; tmp &lt; array[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                array[j] = array[j - <span class="number">1</span>];</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j != i) &#123;</span><br><span class="line">                array[j] = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        InsertSort insertSort = <span class="keyword">new</span> InsertSort();</span><br><span class="line">        <span class="keyword">int</span> [] a = <span class="keyword">new</span> <span class="keyword">int</span> [] &#123;<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> [] b =  insertSort.sort(a);</span><br><span class="line">        printArray(b);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ;i&lt;arr.length;i++)&#123;</span><br><span class="line">            System.out.print(arr[i]+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong></p>
+<p><strong>时间复杂度</strong></p>
+<ul>
+<li>最好情况：O(n^2) 是逆序，每次都要循环n x n边</li>
+<li>最坏情况：O(n)，只要做好for循环就可以了</li>
+</ul>
+<p><strong>空间复杂度</strong></p>
+<p>O(1) 空间复杂度和输入没有关系</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/12/04/InsertSort/" data-id="ck3shq4cm000163se45cw75pw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-WYBB" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/12/02/WYBB/" class="article-date">
@@ -89,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/02/WYBB/" data-id="ck3obg8l80004ikse4eec1ad0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/02/WYBB/" data-id="ck3shq4d7000a63sew06bbp1s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/恋爱/">恋爱</a></li></ul>
@@ -149,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3obg8l50003ikse1d8pwdo3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/01/SelectionSort/" data-id="ck3shq4cx000463se6i2h2218" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
@@ -206,7 +311,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/01/BubbleSort/" data-id="ck3obg8kq0000iksetf6kumgt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/12/01/BubbleSort/" data-id="ck3shq4ch000063se0gnkjxka" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
@@ -310,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/26/jvmByte/" data-id="ck3obg8lj0009ikse1p4w8pho" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/11/26/jvmByte/" data-id="ck3shq4da000e63sel2wsxlzk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
@@ -419,7 +524,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/16/JVM加载/" data-id="ck3obg8le0005ikse6gwtle0q" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/16/JVM加载/" data-id="ck3shq4d6000863sech7y6gfj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -507,7 +612,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/15/JVM 加载连接初始化简介/" data-id="ck3obg8ky0001iksef7ln47r1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/15/JVM 加载连接初始化简介/" data-id="ck3shq4d2000563sekrklolpf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -799,7 +904,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/08/jvm笔记/" data-id="ck3obg8m2000kikseqeutisru" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/jvm笔记/" data-id="ck3shq4dd000i63set15zkln7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -970,7 +1075,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck3obg8m1000jiksejucfe4m9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/13/markdown-语法/" data-id="ck3shq4d8000d63sexbldlp5e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
@@ -982,186 +1087,12 @@
 
 
   
-    <article id="post-如何搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/09/如何搭建个人博客/" class="article-date">
-  <time datetime="2019-06-09T15:10:42.000Z" itemprop="datePublished">2019-06-09</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/09/如何搭建个人博客/">如何搭建个人博客</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1>简介</h1>
-我将带领大家使用hexo(blog 框架)来搭建个人博客，并部署到github上并建立域名，让你们的博客可以被所有人看到。
-
-
-
-<h1>步骤</h1>
-1. 注册github，创建repository
-2. 安装git
-3. 安装hexo
-4. 部署hexo到github上
-5. 绑定域名
-
-<h1>细节</h1>
-**注册github, 创建repository**
-
-<p>登录到github，如果没有注册github，点击右上角头像，点击注册, 然后点击+号下面的 new repository， 在这里的Repository的名字有要求,要求是 <strong>用户名</strong>.github.io</p>
-<p><strong>用户名为github的账户名</strong> 比如我的</p>
-<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g3u7cyz3ioj30oc0b0dgx.jpg" alt="githubprofilename"></p>
-<p><strong>安装git</strong></p>
-<p>git是一个分布式版本管理系统。其中github是基于git的代码管理平台，上面有无数的大神写的开源代码。大家可以参考廖雪峰老师的网站学习git，其中包括如何<a href="https://www.liaoxuefeng.com/wiki/896043488029600/896067008724000" target="_blank">git安装</a> </p>
-<p><strong>Linuxs上安装</strong></p>
-<p>首先在终端(terminal)上输入: git </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git</span><br><span class="line">The program <span class="string">'git'</span> is currently not installed. You can install it by typing:</span><br><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
-
-<p>可以参照命令<code>sudo apt-get install git</code>来进行安装。也可以直接下载git源码，解压，到达路径，依次输入 <code>./config</code> <code>make</code> 和<code>sudo make</code>进行安装。</p>
-<p><strong>mac OX S上安装</strong></p>
-<p>一是安装homebrew，然后通过homebrew安装Git，具体方法请参考homebrew的文档：<a href="http://brew.sh/" target="_blank" rel="noopener">http://brew.sh/</a>。</p>
-<p>第二种方法更简单，也是推荐的方法，就是直接从AppStore安装Xcode，Xcode集成了Git，不过默认没有安装，你需要运行Xcode，选择菜单“Xcode”-&gt;“Preferences”，在弹出窗口中找到“Downloads”，选择“Command Line Tools”，点“Install”就可以完成安装了。</p>
-<p><strong>window上安装</strong></p>
-<p>在Windows上使用Git，可以从Git官网直接<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">下载安装程序</a>（网速慢的同学请移步<a href="https://pan.baidu.com/s/1kU5OCOB#list/path=%2Fpub%2Fgit" target="_blank" rel="noopener">国内镜像</a>），然后按默认选项安装即可。</p>
-<p>安装完成后，在开始菜单里找到“Git”-&gt;“Git Bash”，蹦出一个类似命令行窗口的东西，就说明Git安装成功！</p>
-<p><img src="https://www.liaoxuefeng.com/files/attachments/919018718363424/0" alt="install-git-on-windows"></p>
-<p>安装完成后，要做一些配置，在终端输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">$ git config --global user.email <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
-
-<p>因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。</p>
-<p>生成ssh密钥文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
-
-<p>然后找到.ssh文件下的id_rsa.pub，打开它通过命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p>复制里面的公钥添加到github下，打开<a href="https://github.com/settings/keys" target="_blank" rel="noopener">GitHub_Settings_keys</a> 页面，新建new SSH Key <img src="http://ww2.sinaimg.cn/large/006tNc79ly1g3u79mbazoj30y20nata8.jpg" alt="添加sshkey"></p>
-<p>将id_rsa.pub里的内容复制到key下面的文本里，title可以随便填</p>
-<p>在终端里输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-
-<p>如果结果为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PTY allocation request failed on channel 0</span><br><span class="line">Hi martinpl01! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</span><br><span class="line">Connection to github.com closed.</span><br></pre></td></tr></table></figure>
-
-<p>则代表成功</p>
-<p><strong>安装hexo</strong></p>
-<p>在安装hexo前，要配置hexo的环境，由于hexo基于node.js。所以先安装node.js还有npm(node package manager) npm是node.js的包管理工具, 大家可以参考廖雪峰老师的网站链接地址：<a href="https://www.liaoxuefeng.com/wiki/1022910821149312/1023025597810528" target="_blank" rel="noopener">廖雪峰老师网站</a></p>
-<p>安装完毕后新建文件夹为blog，在blog目录下</p>
-<p>使用npm命令安装Hexo，输入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p>Tips 在这里我遇到了个困难，弄了我一个小时，就是安装成功但是 输入 hexo -v来检查hexo 是否安装成功后显示 没有hexo指令，发现是环境配置不对，通过</p>
-<p>export PATH=$PATH:/xxxxxx/bin</p>
-<p>然后初始化我们的博客，输入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
-
-<p>然后通过输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-<p>在浏览器输入地址 localhost:4000</p>
-<p>你可以看到hexo为我们默认写的一篇blog</p>
-<p><strong>部署hexo到github上</strong></p>
-<p>我们的博客不能只放在自己的主机上，需要被更多的人访问到，那么我们需要把网站部署到github上。那么如何把hexo部署到github的账户上，需要把两者做关联，其实也就是把hexo的配置文件里加上github。</p>
-<p>在blog的路径下，有个配置文件叫_config.yml文件称为<strong>站点</strong>配置文件。打开此文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: https://github.com/martinpl01/martinpl01.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-
-<p>记得在：之后要空格</p>
-<p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>然后我们运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
-
-<p>其实第三条的 hexo d 就是部署网站命令，d是deploy的缩写。完成后，打开浏览器，在地址栏输入你的放置个人网站的仓库路径，即<a href="www.martinpl.top">martinpl01.github.io</a></p>
-<p><strong>绑定域名</strong></p>
-<p>通过阿里云的控制台，购买域名同时解析<img src="http://ww1.sinaimg.cn/large/006tNc79ly1g3u708vlu1j31ri08240a.jpg" alt="域名"></p>
-<p>然后登录GitHub，进入之前创建的仓库，点击settings，设置Custom domain，输入你的域名如<img src="http://ww3.sinaimg.cn/large/006tNc79ly1g3u7geikcyj313m07ijsc.jpg" alt="域名"></p>
-<p>然后输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
-
-<p>这样就可以看到通过访问自己的域名来浏览自己的blog啦</p>
-<p>我的路径是 /Documents/blog/blog 然后 输入</p>
-<p>hexo clean</p>
-<p>hexo g -d</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/如何搭建个人博客/" data-id="ck3obg8m8000niksed3p2gffv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习/">学习</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/09/hello-world/" class="article-date">
-  <time datetime="2019-06-09T09:09:38.000Z" itemprop="datePublished">2019-06-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/09/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/09/hello-world/" data-id="ck3obg8li0008ikse5170q7op" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -1206,6 +1137,14 @@
       <ul>
         
           <li>
+            <a href="/2019/12/05/MergeSort/">MergeSort</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/04/InsertSort/">InsertSort</a>
+          </li>
+        
+          <li>
             <a href="/2019/12/02/WYBB/">WYBB</a>
           </li>
         
@@ -1215,14 +1154,6 @@
         
           <li>
             <a href="/2019/12/01/BubbleSort/">BubbleSort</a>
-          </li>
-        
-          <li>
-            <a href="/2019/11/26/jvmByte/">jvmByte</a>
-          </li>
-        
-          <li>
-            <a href="/2019/10/16/JVM加载/">JVM加载</a>
           </li>
         
       </ul>
